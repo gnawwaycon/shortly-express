@@ -1,3 +1,30 @@
+// const Sequelize = require('sequelize');
+//
+// const sequelize = new Sequelize('postgres://postgres@localhost/shortly');
+// sequelize.authenticate()
+//   .then(() => console.log('database is connected'))
+//   .catch(err => console.error(err));
+//
+// module.exports = sequelize;
+//
+// const Url = sequelize.define('url', {
+//   url: {type: Sequelize.STRING, unique: true},
+//   baseUrl: {type: Sequelize.STRING, unique true},
+//   code: {type: Sequelize.STRING, unique true},
+//   title: {type: Sequelize.STRING, unique true},
+//   visits: {type: Sequelize.INTEGER, unique true},
+// })
+//
+// const Clicks = sequelize.define('click', {
+//   numClick: {sequelize.INTEGER}
+// })
+//
+//
+// module.exports = {
+//   Url,
+//   Clicks
+// }
+
 var path = require('path');
 var knex = require('knex')({
   client: 'sqlite3',
