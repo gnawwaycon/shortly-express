@@ -24,8 +24,7 @@ app.use(bodyParser.json());
 app.use(session({
   secret: 'sompop',
   resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true }
+  saveUninitialized: true
 }));
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -38,19 +37,19 @@ var checkUser = function (req, res, next) {
   } else {
     res.redirect('/login');
   }
-}
+};
 
-app.get('/',
+app.get('/', checkUser,
 function(req, res) {
   res.render('index');
 });
 
-app.get('/create',
+app.get('/create', checkUser,
 function(req, res) {
   res.render('index');
 });
 
-app.get('/links',
+app.get('/links', checkUser,
 function(req, res) {
   Links.reset().fetch().then(function(links) {
     res.status(200).send(links.models);
@@ -72,7 +71,7 @@ app.get('/signout',
     req.session.destroy();
   });
 
-app.post('/links',
+app.post('/links', checkUser,
 function(req, res) {
   var uri = req.body.url;
 
@@ -105,7 +104,17 @@ function(req, res) {
 });
 
 app.post('/signup', function (req, res) {
-  console.log(req.body);
+  Users.create(req.body)
+  .then(user => {
+    req.session.regenerate(() => {
+      req.session.user = user;
+      res.redirect('/');
+    });
+  })
+  .catch(err => {
+    console.log(err);
+    res.sendStatus(400);
+  });
 });
 
 app.post('/login', function (req, res) {
