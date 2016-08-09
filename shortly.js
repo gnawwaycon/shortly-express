@@ -69,6 +69,8 @@ function(req, res) {
 app.get('/signout',
   function(req, res) {
     req.session.destroy();
+    res.redirect('/');
+
   });
 
 app.post('/links', checkUser,
@@ -118,8 +120,18 @@ app.post('/signup', function (req, res) {
 });
 
 app.post('/login', function (req, res) {
+  var username = req.body.username;
+  var password = req.body.password;
+  console.log(req.body);
+  User.login(username, password)
+  .then(() => req.session.regenerate(() => {
+    req.session.user = username;
+    res.redirect('/');
+  }))
+  .catch(() => res.redirect('/login'));
 
 });
+
 /************************************************************/
 // Write your authentication routes here
 /************************************************************/
